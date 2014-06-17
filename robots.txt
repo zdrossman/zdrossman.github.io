@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://zdrossman.github.io/sitemap.xml 
+Sitemap: http://www.zacharydrossman.com/sitemap.xml 
