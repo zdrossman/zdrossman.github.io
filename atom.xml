@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://zdrossman.github.io//atom.xml" rel="self"/>
-  <link href="http://zdrossman.github.io//"/>
-  <updated>2014-06-17T17:52:14-04:00</updated>
-  <id>http://zdrossman.github.io//</id>
+  <link href="http://zdrossman.github.io/atom.xml" rel="self"/>
+  <link href="http://zdrossman.github.io/"/>
+  <updated>2014-06-17T17:56:41-04:00</updated>
+  <id>http://zdrossman.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to: Roll Your Own Objective-C Database]]></title>
-    <link href="http://zdrossman.github.io//blog/2014/06/16/how-to-roll-your-own-objective-c-database/"/>
+    <link href="http://zdrossman.github.io/blog/2014/06/16/how-to-roll-your-own-objective-c-database/"/>
     <updated>2014-06-16T09:55:34-04:00</updated>
-    <id>http://zdrossman.github.io//blog/2014/06/16/how-to-roll-your-own-objective-c-database</id>
+    <id>http://zdrossman.github.io/blog/2014/06/16/how-to-roll-your-own-objective-c-database</id>
     <content type="html"><![CDATA[<p>First, a disclaimer: This is my first attempt at blogging in Octopress. Enough said. Surf my site at your own risk of getting frustrated. This disclaimer may have to appear on every blog post I create for the next few months too, but today&#8217;s is particularly tenuous.</p>
 
 <p>Second, another disclaimer: You will not see all of the code you would need to write in this post just yet. Though I plan to augment this post with additional code in the future. I have just learned how challenging it can be to write objective-c code without the support of Xcode&#8217;s autocomplete feature! (It was always there to give me a push when I needed it.)</p>
