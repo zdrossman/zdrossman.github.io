@@ -4,7 +4,7 @@
   <title><![CDATA[Runtime Will Tell]]></title>
   <link href="http://www.zacharydrossman.com/atom.xml" rel="self"/>
   <link href="http://www.zacharydrossman.com/"/>
-  <updated>2014-06-17T19:21:04-04:00</updated>
+  <updated>2014-06-25T15:14:10-04:00</updated>
   <id>http://www.zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Build Your Own Completion Handler Method]]></title>
+    <link href="http://www.zacharydrossman.com/blog/2014/06/24/how-to-build-your-own-completion-handler-method/"/>
+    <updated>2014-06-24T23:45:58-04:00</updated>
+    <id>http://www.zacharydrossman.com/blog/2014/06/24/how-to-build-your-own-completion-handler-method</id>
+    <content type="html"><![CDATA[<p>What is a completion handler method?</p>
+
+<p>So you&#8217;re finally at the point in your app where you have to make a network call. Let&#8217;s say your app downloads pictures of cats from the interwebs. A network call is the process of asking the web for something and then waiting for it to come back to you with what you asked for. Or not. What if the internet has no pictures of cats on it anywhere? In that case, your request will come back with nothing at all.</p>
+
+<p>So, to prepare for these possibilities, we use completion handlers. Completion handlers tell us whether or not a certain process completed with the results we expected.</p>
+
+<p>Step 1: Create a CompletionBlock typedef.</p>
+
+<p>This step isn&#8217;t crucial, but it will make your code look neater, so I recommend it.</p>
+
+<p>You can think of a typedef as an alias. I&#8217;m not sure that&#8217;s a perfect analogy, but it&#8217;ll do for now if this is your first typedef.</p>
+
+<p>An example of a basic typedef:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef unsigned char BYTE;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This typedef lets us use the word BYTE in place of &#8220;unisigned char&#8221; anytime we declare a variable.</p>
+
+<p>For a block, our typedef might look something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef void(^CompletionBlock)(NSArray *queryResult, NSError *error);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step2: Create a method that takes a Completion block as an argument, e.g.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void) getObjectsInBackgroundWithBlock:(CompletionBlock)completionBlock;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>How we define this method is as follows (using pseudocode, since we don&#8217;t have a specific use case in mind):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void) getObjectsInBackgroundWithBlock:(CompletionBlock)completionBlock
+</span><span class='line'>{
+</span><span class='line'>  // Run a request for information from a web source
+</span><span class='line'>
+</span><span class='line'>  dispatch_queue_t downloadQueue = dispatch_queue_create("Get our data", NULL);
+</span><span class='line'>  dispatch_async(downloadQueue, ^{
+</span><span class='line'>      NSError *error;
+</span><span class='line'>      completionBlock(arrayOfDataFromDownload, error);
+</span><span class='line'>      });
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step3: Now use the method!</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)modifyWebData
+</span><span class='line'>{
+</span><span class='line'>  //assumes you have a shared data store, but if you don't you might have written the "getObjectsInBackgroundWithBlock:" method in the same file, in which case you can just call [self getObjects...]
+</span><span class='line'>  
+</span><span class='line'>  SharedDataStore *dataStore = [SharedDataStore sharedInstance]; //uses a singleton method in a class called SharedDataStore where the "getObjectsInBackgroundWithBlock:" method will be found.
+</span><span class='line'>
+</span><span class='line'>  [dataStore getObjectsInBackgroundWithBlock:^(NSArray *queryResult, NSError *error) {
+</span><span class='line'>      //now do something with the queryResult data. If it were an image, maybe we'd resize it here, for instance.
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>All that said, I wrote this blog to open up a discussion about good use of completion blocks, something I am still getting my head around. It sure does seem like modifyWebData does 2 things, and we all know that a method should only do one thing according to the single responsibility principle. So what now? For discussion.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to: Roll Your Own Objective-C Database]]></title>
