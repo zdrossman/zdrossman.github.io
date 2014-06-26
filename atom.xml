@@ -4,7 +4,7 @@
   <title><![CDATA[Runtime Will Tell]]></title>
   <link href="http://www.zacharydrossman.com/atom.xml" rel="self"/>
   <link href="http://www.zacharydrossman.com/"/>
-  <updated>2014-06-25T16:13:43-04:00</updated>
+  <updated>2014-06-26T14:32:14-04:00</updated>
   <id>http://www.zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -41,7 +41,7 @@
 <p>For a block, our typedef might look something like this:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>typedef void(^CompletionBlock)(NSArray *queryResult, NSError *error);</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef void(^CompletionBlock)(NSArray *queryResult, NSError *error) CompletionBlock;</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Step2: Create a method that takes a Completion block as an argument, e.g.</p>
