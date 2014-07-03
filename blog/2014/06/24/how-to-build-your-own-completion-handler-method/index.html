@@ -9,7 +9,7 @@
   <meta name="author" content="Zachary Drossman">
 
   
-  <meta name="description" content="What is a completion handler method? So you&#8217;re finally at the point in your app where you have to make a network call. Let&#8217;s say your app &hellip;">
+  <meta name="description" content="What is a completion handler method? So you&rsquo;re finally at the point in your app where you have to make a network call. Let&rsquo;s say your app &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,15 +92,15 @@
 
 <div class="entry-content"><p>What is a completion handler method?</p>
 
-<p>So you&#8217;re finally at the point in your app where you have to make a network call. Let&#8217;s say your app downloads pictures of cats from the interwebs. A network call is the process of asking the web for something and then waiting for it to come back to you with what you asked for. Or not. What if the internet has no pictures of cats on it anywhere? In that case, your request will come back with nothing at all.</p>
+<p>So you&rsquo;re finally at the point in your app where you have to make a network call. Let&rsquo;s say your app downloads pictures of cats from the interwebs. A network call is the process of asking the web for something and then waiting for it to come back to you with what you asked for. Or not. What if the internet has no pictures of cats on it anywhere? In that case, your request will come back with nothing at all.</p>
 
 <p>So, to prepare for these possibilities, we use completion handlers. Completion handlers tell us whether or not a certain process completed with the results we expected.</p>
 
 <p>Step 1: Create a CompletionBlock typedef.</p>
 
-<p>This step isn&#8217;t crucial, but it will make your code look neater, so I recommend it.</p>
+<p>This step isn&rsquo;t crucial, but it will make your code look neater, so I recommend it.</p>
 
-<p>You can think of a typedef as an alias. I&#8217;m not sure that&#8217;s a perfect analogy, but it&#8217;ll do for now if this is your first typedef.</p>
+<p>You can think of a typedef as an alias. I&rsquo;m not sure that&rsquo;s a perfect analogy, but it&rsquo;ll do for now if this is your first typedef.</p>
 
 <p>An example of a basic typedef:</p>
 
@@ -108,7 +108,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>typedef unsigned char BYTE;</span></code></pre></td></tr></table></div></figure>
 
 
-<p>This typedef lets us use the word BYTE in place of &#8220;unisigned char&#8221; anytime we declare a variable.</p>
+<p>This typedef lets us use the word BYTE in place of &ldquo;unisigned char&rdquo; anytime we declare a variable.</p>
 
 <p>For a block, our typedef might look something like this:</p>
 
@@ -122,7 +122,7 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>-(void) getObjectsInBackgroundWithBlock:(CompletionBlock)completionBlock;</span></code></pre></td></tr></table></div></figure>
 
 
-<p>How we define this method is as follows (using pseudocode, since we don&#8217;t have a specific use case in mind):</p>
+<p>How we define this method is as follows (using pseudocode, since we don&rsquo;t have a specific use case in mind):</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -215,6 +215,8 @@
         <a class="basic-alignment left" href="/blog/2014/06/16/how-to-roll-your-own-objective-c-database/" title="Previous Post: How To: Roll Your Own Objective-C Database">&laquo; How To: Roll Your Own Objective-C Database</a>
       
       
+        <a class="basic-alignment right" href="/blog/2014/07/02/regular-expressions-my-ass/" title="Next Post: Regular expressions my ass.">Regular expressions my ass. &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -226,6 +228,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/regular-expressions-my-ass/">Regular Expressions My Ass.</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/24/how-to-build-your-own-completion-handler-method/">How to Build Your Own Completion Handler Method</a>

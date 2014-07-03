@@ -90,11 +90,11 @@
   </header>
 
 
-<div class="entry-content"><p>First, a disclaimer: This is my first attempt at blogging in Octopress. Enough said. Surf my site at your own risk of getting frustrated. This disclaimer may have to appear on every blog post I create for the next few months too, but today&#8217;s is particularly tenuous.</p>
+<div class="entry-content"><p>First, a disclaimer: This is my first attempt at blogging in Octopress. Enough said. Surf my site at your own risk of getting frustrated. This disclaimer may have to appear on every blog post I create for the next few months too, but today&rsquo;s is particularly tenuous.</p>
 
-<p>Second, another disclaimer: You will not see all of the code you would need to write in this post just yet. Though I plan to augment this post with additional code in the future. I have just learned how challenging it can be to write objective-c code without the support of Xcode&#8217;s autocomplete feature! (It was always there to give me a push when I needed it.)</p>
+<p>Second, another disclaimer: You will not see all of the code you would need to write in this post just yet. Though I plan to augment this post with additional code in the future. I have just learned how challenging it can be to write objective-c code without the support of Xcode&rsquo;s autocomplete feature! (It was always there to give me a push when I needed it.)</p>
 
-<p>So, why would you roll your own Objective-C database? The Core Data API is built so you don&#8217;t have to do this, but let&#8217;s assume for a moment that you haven&#8217;t gotten your head around Core Data yet and/or you don&#8217;t wish to implement such a bulky framework to do a simple task. For example, let us say you need to be able to search the English dictionary (and don&#8217;t wish to use Apple&#8217;s autocorrect dictionary due to the many non-English words included in it.) Maybe you are building a scrabble game, for instance. For the sake of this discussion, assume you already have a text file that contains every word in the English language on its own line.</p>
+<p>So, why would you roll your own Objective-C database? The Core Data API is built so you don&rsquo;t have to do this, but let&rsquo;s assume for a moment that you haven&rsquo;t gotten your head around Core Data yet and/or you don&rsquo;t wish to implement such a bulky framework to do a simple task. For example, let us say you need to be able to search the English dictionary (and don&rsquo;t wish to use Apple&rsquo;s autocorrect dictionary due to the many non-English words included in it.) Maybe you are building a scrabble game, for instance. For the sake of this discussion, assume you already have a text file that contains every word in the English language on its own line.</p>
 
 <p>The quickest code you could write to search such a file might look like this (assuming you have already specified your filePath/fileEncoding):</p>
 
@@ -129,7 +129,7 @@
 
 <p>Final(?) disclaimer: I cannot say with what speed iOS can access and interpret an external file. This may impede the value of my theory here. Feel free to comment on this if you are more familiar!</p>
 
-<p>With that disclaimer out of the way you must reorganize the data in your file. And for this, you must read the entire file in the way I described in code above once, but only at the time of development (not while a user is accessing the program.) But given you will be storing a local copy of this dictionary on each user&#8217;s phone, doing this once will be an unbelievable time-savings. I will not go through here how to reorganize your file in code at this time, but I will describe it in prose. The point of this post is to consider the gains in running time, and demonstrate some of the code, but perhaps I can come back later and elaborate on this step more explicitly.</p>
+<p>With that disclaimer out of the way you must reorganize the data in your file. And for this, you must read the entire file in the way I described in code above once, but only at the time of development (not while a user is accessing the program.) But given you will be storing a local copy of this dictionary on each user&rsquo;s phone, doing this once will be an unbelievable time-savings. I will not go through here how to reorganize your file in code at this time, but I will describe it in prose. The point of this post is to consider the gains in running time, and demonstrate some of the code, but perhaps I can come back later and elaborate on this step more explicitly.</p>
 
 <p>One way to do this would be to assign each letter in each word its ASCII integer value, and add them up for each word, giving each word a score that can then be used as a key to place it in the back in the file appropriately. This score would then be placed to the left of the word it represents, such that it is the actual key for the word being searched; the code below assumes such a format.</p>
 
@@ -270,6 +270,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/regular-expressions-my-ass/">Regular Expressions My Ass.</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/24/how-to-build-your-own-completion-handler-method/">How to Build Your Own Completion Handler Method</a>
