@@ -113,8 +113,10 @@
 <p>For a block, our typedef might look something like this:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>typedef void(^CompletionBlock)(NSArray *queryResult, NSError *error) CompletionBlock;</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>typedef void(^CompletionBlock)(NSArray *queryResult, NSError *error);</span></code></pre></td></tr></table></div></figure>
 
+
+<p>NB: You might think you need a name for your completion block at the end of the typedef. I&rsquo;m not actually sure why you do not, but this will name it CompletionBlock, just as if you were writing a standard function.</p>
 
 <p>Step2: Create a method that takes a Completion block as an argument, e.g.</p>
 
