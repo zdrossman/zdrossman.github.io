@@ -112,9 +112,11 @@
 
 <p>2) Write a method in DataManager that converts each NSManagedObject type back into a PFObject. (There will be one method for each type of NSManagedObject, like in step #1.)</p>
 
-<p>3) Write a method in DataManager that saves a complete PFObject and takes a Parse Class to save it to. This method should be generic (for any type of PFObject) so we&rsquo;ll only need one.</p>
+<p>3) Write a method in DataManager that creates a new NSManagedObject based on a PFObject and PFObject&rsquo;s class.</p>
 
-<p>4) Write a method in DataManager that creates a new NSManagedObject based on a PFObject and PFObject&rsquo;s class and calls the appropriate category method to initialize it with the required attributes.</p>
+<p>4) Call #3 from your ViewController; and then #1 from here as well.</p>
+
+<p>5) When ready to save to Parse, call #2 from your ViewController.</p>
 </div>
 
 
