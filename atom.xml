@@ -4,7 +4,7 @@
   <title><![CDATA[Runtime Will Tell]]></title>
   <link href="http://www.zacharydrossman.com/atom.xml" rel="self"/>
   <link href="http://www.zacharydrossman.com/"/>
-  <updated>2014-07-10T11:36:41-04:00</updated>
+  <updated>2014-07-17T09:00:57-04:00</updated>
   <id>http://www.zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What I Write About When I Have Nothing to Write About]]></title>
+    <link href="http://www.zacharydrossman.com/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/"/>
+    <updated>2014-07-17T08:38:31-04:00</updated>
+    <id>http://www.zacharydrossman.com/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about</id>
+    <content type="html"><![CDATA[<p><img src="http://placekitten.com/890/280"></p>
+
+<p>Randomness.</p>
+
+<p>A tool that looked interesting: REVEAL.</p>
+
+<p><img src="http://www.zacharydrossman.com/images/reveal-SS.jpg" width="942" height="557" title="image" alt="images"></p>
+
+<p>30 day free trial; this tool will make reviewing complex views much simpler!</p>
+
+<p>Chaos.</p>
+
+<p>A way to use UIActivityIndicators with AFNetworking.</p>
+
+<h1>import &ldquo;UIActivityIndicatorView+AFNetworking.h&rdquo;</h1>
+
+<p>[self.activityIndicator setAnimatingWithStateOfTask:task];</p>
+
+<p>This automates the use of the activity indicator to start and stop as needed, instead of keeping a count of the number of operations that are downloading/uploading data!</p>
+
+<p>Entropy.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Integrating Parse and Core Data]]></title>
