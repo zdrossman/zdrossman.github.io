@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Regular Expressions My Ass. - Runtime Will Tell</title>
+  <meta name="author" content="Zachary Drossman">
+
+  
+  <meta name="description" content="Regular expressions are anything but. Here are some ways to remember how to use them via example. First, the NSRegularExpression class, and how it is &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass">
+  <link href="favicon.png" rel="icon">
+  <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Runtime Will Tell" type="application/atom+xml">
+  <script src="javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Runtime Will Tell</a></h1>
+  
+    <h2>Technically speaking...</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.zacharydrossman.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Regular Expressions My Ass.</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-02T22:07:33-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Regular expressions are anything but. Here are some ways to remember how to use them via example.</p>
+
+<p>First, the NSRegularExpression class, and how it is used:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">phoneSentence</span> <span class="o">=</span> <span class="s">@&quot;My phone number is 555-1212&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">NSRegularExpression</span> <span class="o">*</span><span class="n">regex</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSRegularExpression</span> <span class="nl">regularExpressionWithPattern:</span><span class="s">@&quot;.&quot;</span> <span class="nl">options:</span><span class="n">NSRegularExpressionCaseInsensitive</span> <span class="nl">error:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSArray</span><span class="o">*</span> <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">regex</span> <span class="nl">matchesInString:</span><span class="n">phoneSentence</span>                                      <span class="nl">options:</span><span class="n">NSMatchingWithoutAnchoringBounds</span>
+</span><span class='line'>                                    <span class="nl">range:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">phoneSentence</span> <span class="n">length</span><span class="p">])];</span>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;All matches: %@&quot;</span><span class="p">,</span> <span class="n">matches</span><span class="p">);</span>
+</span><span class='line'><span class="n">NSTextCheckingResult</span> <span class="o">*</span><span class="n">match</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'><span class="n">NSRange</span> <span class="n">range</span> <span class="o">=</span> <span class="n">match</span><span class="p">.</span><span class="n">range</span><span class="p">;</span>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">matchString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">phoneSentence</span> <span class="nl">substringFromIndex:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">]</span> <span class="nl">substringToIndex:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;First match: %@&quot;</span><span class="p">,</span><span class="n">matchString</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code can be broken into the following parts:</p>
+
+<p>1) + (NSRegularExpression <em>)regularExpressionWithPattern:(NSString </em>)pattern options:(NSRegularExpressionOptions)options error:(NSError **)error</p>
+
+<p>Create a regular expression using NSRegularExpression. Consider options such as case insensitivity and continuation across lines (NSRegularExpressionDotMatchesLineSeparators). We did not record the error here, though you are certainly welcome to.</p>
+
+<p>Our simple regex pattern here is &ldquo;.&rdquo;, which effectively means, find every individual character.</p>
+
+<p>2) &ndash; (NSArray <em>)matchesInString:(NSString </em>)string options:(NSMatchingOptions)options range:(NSRange)range</p>
+
+<p>This method returns an array of NSTextCheckingResults, or ranges in which matches were found.</p>
+
+<p>3) Everything after this method</p>
+
+<p>The rest of this code is simply meant to produce the expected result for the first match, which will be a capital &ldquo;M&rdquo;. What you do with the ranges once you have them is up to you. That&rsquo;s the easy part, because you are no longer dealing with regular expressions.</p>
+
+<p>So what are some regular expression operators you should know?</p>
+
+<p>{n} &ndash; match something exactly n times
+{n, } &ndash; match at least n times (as many times as possible)
+{n, m} &ndash; match between n and m times, inclusive
+| &ndash; match either before or after the pipe</p>
+
+<p>And what are some metacharacters you should know?</p>
+
+<p>\d &ndash; Match any decimal digit in the Unicode set of characters
+\D &ndash; Match any non decimal digit
+\r &ndash; Match a carriage return
+\s &ndash; Match a whitespace character
+.  &ndash; Match any character
+^  &ndash; Match only if at the beginning of the line
+$  &ndash; Match only from the end of the line
+\  &ndash; Character escape for the following characters: * ? + [ { } ( ) ^ $ | \ . /</p>
+
+<p>So some nice regular expressions to have in your back pocket (please note I have not validated these!):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">ssnRegex</span> <span class="o">=</span> <span class="s">@&quot;[0-9]{3}-[0-9]{3}-[0-9]{4}&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">emailRegex</span> <span class="o">=</span> <span class="s">@&quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+</span><span class="se">\\</span><span class="s">.[A-Za-z]{2,6}&quot;</span><span class="p">;</span> <span class="c1">//1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">htmltagRegex</span> <span class="o">=</span> <span class="s">@&quot;&lt;([a-z][a-z0-9]*)</span><span class="se">\b</span><span class="s">[^&gt;]*&gt;(.*?)&quot;&quot;; //2</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">phoneRegex</span> <span class="o">=</span> <span class="s">@&quot;^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$&quot;</span><span class="p">;</span> <span class="c1">//3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sources</p>
+
+<p>1) <a href="http://stackoverflow.com/questions/800123/what-are-best-practices-for-validating-email-addresses-in-objective-c-for-ios-2">http://stackoverflow.com/questions/800123/what-are-best-practices-for-validating-email-addresses-in-objective-c-for-ios-2</a></p>
+
+<p>2) <a href="http://www.raywenderlich.com/30288/nsregularexpression-tutorial-and-cheat-sheet">http://www.raywenderlich.com/30288/nsregularexpression-tutorial-and-cheat-sheet</a></p>
+
+<p>3) <a href="http://stackoverflow.com/questions/123559/a-comprehensive-regex-for-phone-number-validation">http://stackoverflow.com/questions/123559/a-comprehensive-regex-for-phone-number-validation</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Zachary Drossman</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-02T22:07:33-04:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://www.zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass/" data-via="zdrossman" data-counturl="http://www.zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/24/how-to-build-your-own-completion-handler-method/" title="Previous Post: How to build your own completion handler method">&laquo; How to build your own completion handler method</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/07/10/integrating-parse-and-core-data/" title="Next Post: Integrating Parse and Core Data">Integrating Parse and Core Data &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/">What I Write About When I Have Nothing to Write About</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/10/integrating-parse-and-core-data/">Integrating Parse and Core Data</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/regular-expressions-my-ass/">Regular Expressions My Ass.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/24/how-to-build-your-own-completion-handler-method/">How to Build Your Own Completion Handler Method</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/16/how-to-roll-your-own-objective-c-database/">How to: Roll Your Own Objective-C Database</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zdrossman">@zdrossman</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'zdrossman',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Zachary Drossman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
