@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Integrating Parse and Core Data - Runtime Will Tell</title>
+  <meta name="author" content="Zachary Drossman">
+
+  
+  <meta name="description" content="I&rsquo;m using this week&rsquo;s blog post to spur conversation about a topic in class. So if you are a reader who is not in my class, you may want &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data">
+  <link href="favicon.png" rel="icon">
+  <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Runtime Will Tell" type="application/atom+xml">
+  <script src="javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Runtime Will Tell</a></h1>
+  
+    <h2>Technically speaking...</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.zacharydrossman.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Integrating Parse and Core Data</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-10T08:39:20-04:00" pubdate data-updated="true">Jul 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&rsquo;m using this week&rsquo;s blog post to spur conversation about a topic in class. So if you are a reader who is not in my class, you may want to skip this one. Or comment. That would be great too.</p>
+
+<p>Integration of Parse with Core Data seems to come up fairly often in conversation (what parties do I go to?).</p>
+
+<p>So, I wanted to hypothesize here a bit on how I might do this. And in a future post, elaborate on how I actually did do it (if different / or more nuanced from the way I describe the process here)</p>
+
+<p>I believe the most straightforward (I did not say most elegant) way to integrate core data and Parse is the following:</p>
+
+<p>First a few prerequisites:</p>
+
+<p>A) Do NOT use PFObject subclassing for your local objects.</p>
+
+<p>B) Implement boilerplate core data code (with or without fetched results controller to your liking.)</p>
+
+<p>C) Create a DataManager object that is a singleton.</p>
+
+<p>Then, get started:</p>
+
+<p>1) Write a category to each NSManagedObject that effectively takes the place of a custom initializer; this custom initializer will take each key/value pair from the PFObject and assign it to the appropriate attribute of the NSManagedObject. Like I said, this isn&rsquo;t the most elegant way of doing things. I have seen NSHipster articles and Github repos that suggest using NSValueTransformer, but I&rsquo;m not ready to metaprogram my process.</p>
+
+<p>2) Write a method in DataManager that converts each NSManagedObject type back into a PFObject. (There will be one method for each type of NSManagedObject, like in step #1.)</p>
+
+<p>3) Write a method in DataManager that creates a new NSManagedObject based on a PFObject and PFObject&rsquo;s class.</p>
+
+<p>4) Call #3 from your ViewController; and then #1 from here as well.</p>
+
+<p>5) When ready to save to Parse, call #2 from your ViewController.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Zachary Drossman</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-10T08:39:20-04:00" pubdate data-updated="true">Jul 10<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://www.zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data/" data-via="zdrossman" data-counturl="http://www.zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/02/regular-expressions-my-ass/" title="Previous Post: Regular expressions my ass.">&laquo; Regular expressions my ass.</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/" title="Next Post: What I write about when I have nothing to write about">What I write about when I have nothing to write about &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/">What I Write About When I Have Nothing to Write About</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/10/integrating-parse-and-core-data/">Integrating Parse and Core Data</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/regular-expressions-my-ass/">Regular Expressions My Ass.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/24/how-to-build-your-own-completion-handler-method/">How to Build Your Own Completion Handler Method</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/16/how-to-roll-your-own-objective-c-database/">How to: Roll Your Own Objective-C Database</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zdrossman">@zdrossman</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'zdrossman',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Zachary Drossman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
