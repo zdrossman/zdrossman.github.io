@@ -4,7 +4,7 @@
   <title><![CDATA[Runtime Will Tell]]></title>
   <link href="http://zacharydrossman.com/atom.xml" rel="self"/>
   <link href="http://zacharydrossman.com/"/>
-  <updated>2014-10-20T13:12:39-04:00</updated>
+  <updated>2014-10-20T13:14:43-04:00</updated>
   <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -44,7 +44,7 @@
 
 <p>You can then access this template via the File menu, by clicking on &ldquo;New File&rdquo; and then choosing &ldquo;Specta Templates&rdquo; in the left hand panel.</p>
 
-<p><img src="https://github.com/zdrossman/blob/master/spectaTemplateScreenshot.png" alt="" /></p>
+<p><img src="https://github.com/zdrossman/zdrossman.github.io/blob/master/images/spectaTemplateScreenshot.png" alt="" /></p>
 
 <h4>Prerequisite: File Setup</h4>
 
