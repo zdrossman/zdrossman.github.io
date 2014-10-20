@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Runtime Will Tell]]></title>
-  <link href="http://www.zacharydrossman.com/atom.xml" rel="self"/>
-  <link href="http://www.zacharydrossman.com/"/>
-  <updated>2014-07-17T09:12:13-04:00</updated>
-  <id>http://www.zacharydrossman.com/</id>
+  <link href="http://zacharydrossman.com/atom.xml" rel="self"/>
+  <link href="http://zacharydrossman.com/"/>
+  <updated>2014-10-20T13:04:05-04:00</updated>
+  <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
     
@@ -14,15 +14,823 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Unit Testing Basics]]></title>
+    <link href="http://zacharydrossman.com/blog/2014/10/20/unit-testing-basics/"/>
+    <updated>2014-10-20T11:39:16-04:00</updated>
+    <id>http://zacharydrossman.com/blog/2014/10/20/unit-testing-basics</id>
+    <content type="html"><![CDATA[<h1>Unit testing</h1>
+
+<h2>What Problem Are We Solving?</h2>
+
+<p>Ahh testing. Here&rsquo;s a topic that warrants an entire book. Or bookshelf.</p>
+
+<p>As a programmer, we are often in the weeds, writing new code, and more frequently editing existing code for that new feature set, bug we found yesterday, or requested changes from our designer. Whatever the case, it can be a challenge to take a step back and think about the requirements of our projects, and how best to implement the logic we are attempting to type in our text editors.</p>
+
+<p>Additionally, if we make a change to a code base, how do we know for sure we haven&rsquo;t upset those requirements, and / or various dependencies on our code?</p>
+
+<h2>What is Unit Testing?</h2>
+
+<p>Unit testing is the first line of defense against creating more headaches for ourselves as developers than we were initially trying to solve for.</p>
+
+<p>When we say unit testing, we mean verifying specific units of our code are working as expected. Traditionally in Objective-C, by unit we mean a single Class.</p>
+
+<h2>How to Unit Test</h2>
+
+<h4>Prerequisite: Toolkit</h4>
+
+<p>In order to properly unit test in Objective-C, we must first choose our weapon &ndash; the testing spec library we will use to write our tests. For the sake of this blog post (and what I generally use) we will use the combination of <a href="https://github.com/specta/specta">Specta</a> and <a href="https://github.com/specta/expecta">Expecta</a>. We recommend installing these libraries through <a href="http://cocoapods.org/">Cocoapods</a>.</p>
+
+<p>Once installed, we also recommend installing the <a href="https://github.com/luiza-cicone/Specta-Templates-Xcode">Specta Spec</a> via <a href="http://alcatraz.io/">Alcatraz Package Manager</a>.</p>
+
+<p>You can then access this template via the File menu, by clicking on &ldquo;New File&rdquo; and then choosing &ldquo;Specta Templates&rdquo; in the left hand panel.</p>
+
+<p><img src="https://github.com/zdrossman/blob/master/spectaTemplateScreenshot.png" alt="" /></p>
+
+<h4>Prerequisite: File Setup</h4>
+
+<p>Upon opening the Specta Template, there are only a few steps in order to get up and running (once you have added the Specta and Expecta libraries to your Podfile.) Namely, the top of your spec should look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Specta.h&quot;</span>
+</span><span class='line'><span class="cp">#import &lt;The file name of the class you are testing&gt;</span>
+</span><span class='line'><span class="cp">#define EXP_SHORTHAND</span>
+</span><span class='line'><span class="cp">#import &quot;Expecta.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">SpecBegin</span><span class="p">(</span><span class="o">&lt;</span><span class="n">The</span> <span class="k">class</span> <span class="n">you</span> <span class="n">are</span> <span class="n">testing</span> <span class="n">goes</span> <span class="n">here</span><span class="p">,</span> <span class="n">without</span> <span class="n">the</span> <span class="n">extension</span><span class="o">&gt;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note: It is important that you define <code>EXP_SHORTHAND</code> before importing the <code>Expecta.h</code> file in the code.</p>
+
+<h4>How to Write Useful Tests</h4>
+
+<p>The following is a slightly modified example of unit testing from one of our labs:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Specta.h&quot;</span>
+</span><span class='line'><span class="cp">#import &quot;Pet.h&quot;</span>
+</span><span class='line'><span class="cp">#define EXP_SHORTHAND</span>
+</span><span class='line'><span class="cp">#import &quot;Expecta.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">SpecBegin</span><span class="p">(</span><span class="n">Pet</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span><span class="p">(</span><span class="s">@&quot;Pet&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span><span class="p">(</span><span class="s">@&quot;makeASound&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">it</span><span class="p">(</span><span class="s">@&quot;should be an instance method&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">Pet</span> <span class="o">*</span><span class="n">cutePet</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Pet</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">cutePet</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">respondTo</span><span class="p">(</span><span class="k">@selector</span><span class="p">(</span><span class="n">makeASound</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="p">(</span><span class="s">@&quot;should return the appropriate NSString&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">Pet</span> <span class="o">*</span><span class="n">cutePet</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Pet</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">cutePet</span> <span class="n">makeASound</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;Pet me!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span><span class="p">(</span><span class="s">@&quot;eatSomething&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="p">(</span><span class="s">@&quot;should be an instance method&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">Pet</span> <span class="o">*</span><span class="n">cutePet</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Pet</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">cutePet</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">respondTo</span><span class="p">(</span><span class="k">@selector</span><span class="p">(</span><span class="n">eatSomething</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="p">(</span><span class="s">@&quot;should return the appropriate NSString&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">Pet</span> <span class="o">*</span><span class="n">cutePet</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Pet</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">cutePet</span> <span class="n">eatSomething</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;Nom nom nom.&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">SpecEnd</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&rsquo;ll describe how these tests work, line by line.</p>
+
+<p>Tests are developed as a set of nested blocks. If you haven&rsquo;t yet learned about blocks, all you need to know for now is that they begin with <code>^{</code> and end with <code>}</code>. For the sake of testing, you can think of blocks as simply a way to delineate sections of code into sub-sections. (There is a lot more to blocks, but for another day.)</p>
+
+<p>Unit testing combines two types of blocks. These are <code>describe</code> blocks and <code>it</code> blocks. Think of testing as a form of outline. Every <code>describe</code> block may contain a <code>describe</code> block within it, but eventually it must end in it&rsquo;s innermost block being an <code>it</code> block (or multiple <code>it</code> blocks). The <code>it</code> block actually performs a test. <code>Describe</code> blocks simply allow us to build meaningful descriptions (surprise!) of the tests we are about to perform.</p>
+
+<p>So at the outermost level of our unit tests, we begin with a describe block that describes the class we will be testing. In our example, that will be <code>Pet</code>.</p>
+
+<p>Within that block, we create additional describe blocks. Our first describes <code>makeASound</code>, a method we want to create in our <code>Pet</code> class. We can see <code>makeASound</code> should be an instance method from the first <code>it</code> block, and that it should return an <code>NSString</code>, based on the second <code>it</code> block.</p>
+
+<p>The language used to test within an <code>it</code> block begins with the word <code>expect</code>, and takes an argument for the thing we want to test. In our first <code>it</code> block, we are expecting the object <code>cutePet</code> to <code>respondTo</code> the selector (aka method) <code>makeASound</code>. By implementing this test, if our class does not include this method, we will get notified.</p>
+
+<p>Note: <code>it</code> blocks should generally only contain a single test, i.e. <code>expect</code> statement.</p>
+
+<p>Additional note: For a method with arguments, the selector will include the <code>:</code> but not the argument names. For instance, if I had the following method&hellip;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">doSomethingWithName:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span> <span class="nf">andBirthday:</span><span class="p">(</span><span class="bp">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">birthdate</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip;the selector would be <code>@selector(doSomethingWithName:AndBirthday:)</code>.</p>
+
+<p>The cool thing about this test is that by using these nested <code>describe</code> and <code>it</code> blocks, when we run our tests the first test will read: &ldquo;Pet makeASound should be an instance method.&rdquo; Our test results can now be read in plain english.</p>
+
+<p>In our second test, we <code>expect</code> that the return value of the method <code>makeASound</code> will be an <code>NSString</code> and that <code>NSString</code> will have the value `@&ldquo;Pet me!&rdquo;&lsquo;&rsquo;</p>
+
+<p>The second set of tests is very similar. For more examples, check out the next section: Standard Types of Unit Tests.</p>
+
+<p>But before we look at other tests, we should think about how these tests might be written more concisely. For instance, you&rsquo;ll notice that in every <code>it</code> block we initialize an <code>Pet</code> in order to test that class&rsquo;s instance methods. Wouldn&rsquo;t it be nice if we could just write that initialization statement once?</p>
+
+<p>Well, as you probably noted if you have opened the Specta Template already, there are in fact, four blocks we have not talked about yet. These are your <code>beforeAll</code>, <code>beforeEach</code>, <code>afterEach</code>, and <code>afterAll</code> blocks. These blocks allow us to run a piece of code either, once (<code>beforeAll</code>) prior to the tests running, or prior to each test (<code>beforeEach</code>), and similarly following each test being run (<code>afterEach</code>) and every test being run (<code>afterAll</code>). So a better way to write the code above would be the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;Specta.h&quot;</span>
+</span><span class='line'><span class="cp">#import &quot;Pet.h&quot;</span>
+</span><span class='line'><span class="cp">#define EXP_SHORTHAND</span>
+</span><span class='line'><span class="cp">#import &quot;Expecta.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">SpecBegin</span><span class="p">(</span><span class="n">Pet</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span><span class="p">(</span><span class="s">@&quot;Pet&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">__block</span> <span class="n">Pet</span> <span class="o">*</span><span class="n">cutePet</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">beforeAll</span><span class="p">(</span><span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">cutePet</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Pet</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span><span class="p">(</span><span class="s">@&quot;makeASound&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">it</span><span class="p">(</span><span class="s">@&quot;should be an instance method&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">cutePet</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">respondTo</span><span class="p">(</span><span class="k">@selector</span><span class="p">(</span><span class="n">makeASound</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="p">(</span><span class="s">@&quot;should return the appropriate NSString&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">cutePet</span> <span class="n">makeASound</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;Pet me!&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">describe</span><span class="p">(</span><span class="s">@&quot;eatSomething&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="p">(</span><span class="s">@&quot;should be an instance method&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">cutePet</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">respondTo</span><span class="p">(</span><span class="k">@selector</span><span class="p">(</span><span class="n">eatSomething</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="p">(</span><span class="s">@&quot;should return the appropriate NSString&quot;</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">cutePet</span> <span class="n">eatSomething</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;Nom nom nom.&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">SpecEnd</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You&rsquo;ll notice in the above, I have declared my variable <code>cutePet</code> outside of the <code>beforeAll</code> block. This is because as with any variable, we need to make sure it has the proper scope to be used elsewhere in our code. This is no different than initializing a variable inside of an <code>if</code> statement, where we would only have access to it between the <code>if</code> statement&rsquo;s brackets.</p>
+
+<p>That said, you are probably wondering why I have written <code>__block</code> prior to declaring the variable.</p>
+
+<p>For safety, and this will be further elaborated upon in a lesson on blocks, variables used within a block must be designated this way if they are to be written to. (Note: If you do not use the <code>__block</code> syntax and attempt to set a variable inside of a block to a new value, that value will only persist while inside of the block.) In short, expect to be using <code>__block</code> syntax for all variables that will be used across various tests.</p>
+
+<p>Now back to our regularly scheduled program&hellip;</p>
+
+<p>One last thing before moving on to standard unit test examples. Let&rsquo;s make sure we&rsquo;re all clear on when to use <code>beforeAll</code> / <code>afterAll</code> vs. <code>beforeEach</code> / <code>afterEach</code>. Using <code>all</code> means that if we initialize a variable there, and we make changes to this variable in the tests, those changes will persist. <code>beforeEach</code> is more like having a new instance in each test, as we did earlier in this tutorial.</p>
+
+<h4>Standard Unit Tests (Source: <a href="https://github.com/specta/expecta">Expecta</a> )</h4>
+
+<h5>Commonly Used Matchers</h5>
+
+<h6>isEqual</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// compares objects or primitives x and y and passes if they are identical (==) </span>
+</span><span class='line'><span class="c1">// or equivalent (isEqual:).</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Examples</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="mi">@2</span> <span class="n">integerValue</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">@3</span> <span class="n">integerValue</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">([</span><span class="mi">@5</span> <span class="n">integerValue</span><span class="p">]);</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">myObject</span> <span class="n">description</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="s">@&quot;This is my object&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Something to keep in mind about:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEqual:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">other</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>isEqual</code> matcher does one of two things; either it checks to see if they are <code>==</code> the same (as in the same memory address), or that the objects evaluate to the same value (e.g. <code>@5 = @5</code>). If you are trying to use <code>isEqual</code> with custom objects, however, you must override the <code>isEqual</code> method of <code>NSObject</code> so that the matcher knows how to evaluate the equivalency.</p>
+
+<p>For instance, if you had an Car object, you might want to check in your <code>isEqual</code> override that the model, year, and color are all the same, and only then return YES, to determine equality.</p>
+
+<h6>beNil</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if x is nil.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beNil</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Examples</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">myObject</span> <span class="n">removeFromDataSet</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">beNil</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>beTruthy / beFalsy</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if x evaluates to true (non-zero).</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beTruthy</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x evaluates to false (zero).</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beFalsy</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Examples</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">Dog</span> <span class="n">canPurr</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">beFalsy</span><span class="p">();</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">Cat</span> <span class="n">canPurr</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">beTruthy</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>beInstanceOf</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if x is an instance of a class Foo.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beInstanceOf</span><span class="p">([</span><span class="n">Foo</span> <span class="k">class</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Examples</span>
+</span><span class='line'><span class="n">Dog</span> <span class="o">*</span><span class="n">dog</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dog</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">dog</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beInstanceOf</span><span class="p">([</span><span class="n">Dog</span> <span class="k">class</span><span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>beKindOf</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if x is an instance of a class Foo or if x is an instance of any class </span>
+</span><span class='line'><span class="c1">// that inherits from the class Foo.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beKindOf</span><span class="p">([</span><span class="n">Foo</span> <span class="k">class</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Examples</span>
+</span><span class='line'><span class="n">Dog</span> <span class="o">*</span><span class="n">dog</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dog</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">]</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">dog</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beKindOf</span><span class="p">([</span><span class="n">Pet</span> <span class="k">class</span><span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>beginWith / startWith / endWith</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if an instance of NSString, NSArray, or NSOrderedSet x begins with y.</span>
+</span><span class='line'><span class="c1">// also aliased by startWith</span>
+</span><span class='line'><span class="c1">// the expect argument must be of the same type as the beginWith argument</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beginWith</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if an instance of NSString, NSArray, or NSOrderedSet x ends with y.</span>
+</span><span class='line'><span class="c1">// the expect argument must be of the same type as the endWith argument</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">endWith</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//Examples</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">myName</span> <span class="o">=</span> <span class="s">@&quot;Zach&quot;</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">myName</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beginWith</span><span class="p">(</span><span class="s">@&quot;Za&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">myName</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">endWith</span><span class="p">(</span><span class="s">@&quot;ch&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">myFriends</span> <span class="o">=</span> <span class="l">@[</span><span class="s">@&quot;Joe&quot;</span><span class="p">,</span><span class="s">@&quot;Chris&quot;</span><span class="p">,</span><span class="s">@&quot;Al&quot;</span><span class="l">]</span><span class="p">;</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">myFriends</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beginWith</span><span class="p">(</span><span class="l">@[</span><span class="s">@&quot;Joe&quot;</span><span class="l">]</span><span class="p">);</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">myFriends</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">endWith</span><span class="p">(</span><span class="l">@[</span><span class="s">@&quot;Al&quot;</span><span class="l">]</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>beIdenticalTo</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// compares objects x and y and passes if they are identical and have the </span>
+</span><span class='line'><span class="c1">// same memory address.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beIdenticalTo</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Examples:</span>
+</span><span class='line'><span class="n">Dog</span> <span class="o">*</span><span class="n">dog</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dog</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="n">Pet</span> <span class="o">*</span><span class="n">pet</span> <span class="o">=</span> <span class="p">(</span><span class="n">Pet</span> <span class="o">*</span><span class="p">)</span><span class="n">dog</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">dog</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beIdenticalTo</span><span class="p">(</span><span class="n">pet</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>contain</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if an instance of NSArray or NSString x contains y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">contain</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Examples:</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="s">@&quot;This is my name&quot;</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">contain</span><span class="p">(</span><span class="s">@&quot;is &quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">NSArray</span> <span class="o">*</span><span class="n">myNameSentence</span> <span class="o">=</span> <span class="l">@[</span><span class="s">@&quot;This&quot;</span><span class="p">,</span><span class="s">@&quot;is&quot;</span><span class="p">,</span><span class="s">@&quot;my&quot;</span><span class="p">,</span><span class="s">@&quot;name&quot;</span><span class="l">]</span><span class="p">;</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">myNameSentence</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">contain</span><span class="p">(</span><span class="s">@&quot;is&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>Less commonly used matchers, but still interesting</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// passes if an instance of NSArray, NSSet, NSDictionary or NSOrderedSet x </span>
+</span><span class='line'><span class="c1">// contains all elements of y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beSupersetOf</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if an instance of NSArray, NSSet, NSDictionary or NSString x has </span>
+</span><span class='line'><span class="c1">// a count or length of y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">haveCountOf</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if an instance of NSArray, NSSet, NSDictionary or NSString x has </span>
+</span><span class='line'><span class="c1">// a count or length of 0.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beEmpty</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if the class Foo is a subclass of the class Bar or if it is identical to </span>
+</span><span class='line'><span class="c1">// the class Bar. </span>
+</span><span class='line'><span class="c1">// Use beKindOf() for class clusters.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">([</span><span class="n">Foo</span> <span class="k">class</span><span class="p">]).</span><span class="n">to</span><span class="p">.</span><span class="n">beSubclassOf</span><span class="p">([</span><span class="n">Bar</span> <span class="k">class</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is less than y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beLessThan</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is less than or equal to y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beLessThanOrEqualTo</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is greater than y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beGreaterThan</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is greater than or equal to y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beGreaterThanOrEqualTo</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is in the range of y and z.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beInTheRangeOf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is close to y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beCloseTo</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x is close to y within z.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">beCloseToWithin</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if a given block of code raises an exception named ExceptionName.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="o">^</span><span class="p">{</span> <span class="cm">/* code */</span> <span class="p">}).</span><span class="n">to</span><span class="p">.</span><span class="n">raise</span><span class="p">(</span><span class="s">@&quot;ExceptionName&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if a given block of code raises any exception.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="o">^</span><span class="p">{</span> <span class="cm">/* code */</span> <span class="p">}).</span><span class="n">to</span><span class="p">.</span><span class="n">raiseAny</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x conforms to the protocol y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">conformTo</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if x responds to the selector y.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="n">x</span><span class="p">).</span><span class="n">to</span><span class="p">.</span><span class="n">respondTo</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if a given block of code generates an NSNotification named NotificationName.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="o">^</span><span class="p">{</span> <span class="cm">/* code */</span> <span class="p">}).</span><span class="n">to</span><span class="p">.</span><span class="n">notify</span><span class="p">(</span><span class="s">@&quot;NotificationName&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// passes if a given block of code generates an NSNotification equal to the passed </span>
+</span><span class='line'><span class="c1">// notification.</span>
+</span><span class='line'><span class="n">expect</span><span class="p">(</span><span class="o">^</span><span class="p">{</span> <span class="cm">/* code */</span> <span class="p">}).</span><span class="n">to</span><span class="p">.</span><span class="n">notify</span><span class="p">(</span><span class="n">notification</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Unexpected Behaviors</h2>
+
+<ul>
+<li><p>If you forget to place <code>()</code> after the matcher (e.g. <code>to.beNil</code> vs. <code>to.beNil()</code> ), your test will simply not evaluate. It will appear to pass even if it is failing. Be sure to include your parentheses!</p></li>
+<li><p>Tests will be ignored if not written appropriately inside of an <code>it</code> block. So you might think they are passing when they are effectively not even part of the tests. Make sure all tests are written inside <code>it</code> blocks!</p></li>
+<li><p>Tests do not run in a specified order. This is particularly an issue because you might think that you can use a <code>beforeAll</code> block when they need a <code>beforeEach</code> block, simply because their tests run in an order that affects the state of the variable you created before the tests began in a way you are not expecting. Make sure you consider the state of the program for each test independently from every other.</p></li>
+</ul>
+
+
+<h2>Common Error Messages</h2>
+
+<ul>
+<li>We&rsquo;ve all done this one before: Opening the .xcodeproj instead of the .xcworkspace and attempting to test. Your testing frameworks will not be a part of the project. You will get an <code>Apple Mach-O Linker Error</code> and in the detail see something that says <code>library not found for -lPods...</code> This is a good sign that all you have to do is close down the xcodeproj and open up the xcworkspace and you&rsquo;ll be back in business!</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Working With the Contact List]]></title>
+    <link href="http://zacharydrossman.com/blog/2014/07/29/working-with-the-contact-list/"/>
+    <updated>2014-07-29T14:06:33-04:00</updated>
+    <id>http://zacharydrossman.com/blog/2014/07/29/working-with-the-contact-list</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been in dire need of a refresher on how to work with the contact list, and so, I am creating a reference!</p>
+
+<p>Step 1: Make sure you have authorization to use the contact data:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">isAuthorized</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSArray</span> <span class="o">*</span><span class="n">contactsArray</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="n">ABAuthorizationStatus</span><span class="p">)</span><span class="nf">isAuthorized</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">_isAuthorized</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">ABAddressBookGetAuthorizationStatus</span><span class="p">()</span> <span class="o">==</span> <span class="n">kABAuthorizationStatusAuthorized</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">_isAuthorized</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">_isAuthorized</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 2: If not authorized, get authorized or don&rsquo;t do anything!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeAppToUseAddressBookWithCompletion:</span><span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">ABAddressBookRef</span> <span class="n">addressBook</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">))</span><span class="nv">completionBlock</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">CFErrorRef</span> <span class="n">error</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">ABAddressBookRef</span> <span class="n">addressBook</span> <span class="o">=</span> <span class="n">ABAddressBookCreateWithOptions</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isAuthorized</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">ABAddressBookRequestAccessWithCompletion</span><span class="p">(</span><span class="n">addressBook</span><span class="p">,</span> <span class="o">^</span><span class="p">(</span><span class="kt">bool</span> <span class="n">granted</span><span class="p">,</span> <span class="n">CFErrorRef</span> <span class="n">error</span><span class="p">){</span>
+</span><span class='line'>            <span class="n">completionBlock</span><span class="p">(</span><span class="n">addressBook</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">CFRelease</span><span class="p">(</span><span class="n">addressBook</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 3: Collect data from the addressbook; you will need to bridge_transfer the ArrayOfAllPeople since it is written in C and not objective-C!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">collectContactsFromAddressBook</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">[</span><span class="nb">self</span> <span class="nl">authorizeAppToUseAddressBookWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">ABAddressBookRef</span> <span class="n">addressBook</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">contactsFromAddressBook</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">addressBook</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="bp">NSArray</span> <span class="o">*</span><span class="n">allContacts</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="n">ABAddressBookCopyArrayOfAllPeople</span><span class="p">(</span><span class="n">addressBook</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>          <span class="bp">NSUInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>          <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">allContacts</span> <span class="n">count</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="n">Contact</span> <span class="o">*</span><span class="n">contact</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Contact</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="n">ABRecordRef</span> <span class="n">contactPerson</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge</span> <span class="n">ABRecordRef</span><span class="p">)</span><span class="n">allContacts</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="bp">NSDate</span> <span class="o">*</span><span class="n">lastModiDate</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSDate</span><span class="o">*</span><span class="p">)</span><span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonModificationDateProperty</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="c1">//names</span>
+</span><span class='line'>              <span class="bp">NSString</span> <span class="o">*</span><span class="n">firstName</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonFirstNameProperty</span><span class="p">);</span>
+</span><span class='line'>              <span class="bp">NSString</span> <span class="o">*</span><span class="n">lastName</span> <span class="o">=</span>  <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonLastNameProperty</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="bp">NSString</span> <span class="o">*</span><span class="n">fullName</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">(</span><span class="n">lastName</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="n">fullName</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">firstName</span><span class="p">];</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>              <span class="k">else</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="n">fullName</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%@ %@&quot;</span><span class="p">,</span> <span class="n">firstName</span><span class="p">,</span> <span class="n">lastName</span><span class="p">];</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">contactFirstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">contactLastName</span> <span class="o">=</span> <span class="n">lastName</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">contactFullName</span> <span class="o">=</span> <span class="n">fullName</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">modiDate</span> <span class="o">=</span> <span class="n">lastModiDate</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="c1">//email</span>
+</span><span class='line'>              <span class="n">ABMultiValueRef</span> <span class="n">emails</span> <span class="o">=</span> <span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonEmailProperty</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="bp">NSUInteger</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">ABMultiValueGetCount</span><span class="p">(</span><span class="n">emails</span><span class="p">);</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="bp">NSString</span> <span class="o">*</span><span class="n">email</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">ABMultiValueCopyValueAtIndex</span><span class="p">(</span><span class="n">emails</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+</span><span class='line'>                  <span class="p">[</span><span class="n">contact</span><span class="p">.</span><span class="n">contactEmailArray</span> <span class="nl">addObject</span><span class="p">:</span><span class="n">email</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="c1">//phone number</span>
+</span><span class='line'>              <span class="n">ABMultiValueRef</span> <span class="n">phonenums</span> <span class="o">=</span> <span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonPhoneProperty</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="c1">//Add to mutable contact array</span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">([</span><span class="n">contact</span><span class="p">.</span><span class="n">contactPhoneNumberArray</span> <span class="n">firstObject</span><span class="p">])</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>              <span class="p">[</span><span class="n">contactsFromAddressBook</span> <span class="nl">addObject</span><span class="p">:</span><span class="n">contact</span><span class="p">];</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">contactsArray</span> <span class="o">=</span> <span class="n">contactsFromAddressBook</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">}];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[What I Write About When I Have Nothing to Write About]]></title>
-    <link href="http://www.zacharydrossman.com/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/"/>
+    <link href="http://zacharydrossman.com/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/"/>
     <updated>2014-07-17T08:38:31-04:00</updated>
-    <id>http://www.zacharydrossman.com/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about</id>
+    <id>http://zacharydrossman.com/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about</id>
     <content type="html"><![CDATA[<p><img src="http://placekitten.com/890/280"></p>
 
 <p>Randomness: A tool that looked interesting: REVEAL.</p>
 
-<p><img src="http://www.zacharydrossman.com/images/reveal-SS.png" /></p>
+<p><img src="http://zacharydrossman.com/images/reveal-SS.png" /></p>
 
 <p>30 day free trial; this tool will make reviewing complex views much simpler!</p>
 
@@ -33,7 +841,7 @@
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cp">#import &quot;UIActivityIndicatorView+AFNetworking.h&quot;</span>
 </span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">activityIndicator</span> <span class="nl">setAnimatingWithStateOfTask:</span><span class="n">task</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">activityIndicator</span> <span class="nl">setAnimatingWithStateOfTask</span><span class="p">:</span><span class="n">task</span><span class="p">];</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -58,9 +866,9 @@
   
   <entry>
     <title type="html"><![CDATA[Integrating Parse and Core Data]]></title>
-    <link href="http://www.zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data/"/>
+    <link href="http://zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data/"/>
     <updated>2014-07-10T08:39:20-04:00</updated>
-    <id>http://www.zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data</id>
+    <id>http://zacharydrossman.com/blog/2014/07/10/integrating-parse-and-core-data</id>
     <content type="html"><![CDATA[<p>I&rsquo;m using this week&rsquo;s blog post to spur conversation about a topic in class. So if you are a reader who is not in my class, you may want to skip this one. Or comment. That would be great too.</p>
 
 <p>Integration of Parse with Core Data seems to come up fairly often in conversation (what parties do I go to?).</p>
@@ -93,9 +901,9 @@
   
   <entry>
     <title type="html"><![CDATA[Regular Expressions My Ass.]]></title>
-    <link href="http://www.zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass/"/>
+    <link href="http://zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass/"/>
     <updated>2014-07-02T22:07:33-04:00</updated>
-    <id>http://www.zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass</id>
+    <id>http://zacharydrossman.com/blog/2014/07/02/regular-expressions-my-ass</id>
     <content type="html"><![CDATA[<p>Regular expressions are anything but. Here are some ways to remember how to use them via example.</p>
 
 <p>First, the NSRegularExpression class, and how it is used:</p>
@@ -110,14 +918,14 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">phoneSentence</span> <span class="o">=</span> <span class="s">@&quot;My phone number is 555-1212&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="n">NSRegularExpression</span> <span class="o">*</span><span class="n">regex</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSRegularExpression</span> <span class="nl">regularExpressionWithPattern:</span><span class="s">@&quot;.&quot;</span> <span class="nl">options:</span><span class="n">NSRegularExpressionCaseInsensitive</span> <span class="nl">error:</span><span class="nb">nil</span><span class="p">];</span>
-</span><span class='line'><span class="n">NSArray</span><span class="o">*</span> <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">regex</span> <span class="nl">matchesInString:</span><span class="n">phoneSentence</span>                                      <span class="nl">options:</span><span class="n">NSMatchingWithoutAnchoringBounds</span>
-</span><span class='line'>                                    <span class="nl">range:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">phoneSentence</span> <span class="n">length</span><span class="p">])];</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">phoneSentence</span> <span class="o">=</span> <span class="s">@&quot;My phone number is 555-1212&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSRegularExpression</span> <span class="o">*</span><span class="n">regex</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSRegularExpression</span> <span class="nl">regularExpressionWithPattern</span><span class="p">:</span><span class="s">@&quot;.&quot;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSRegularExpressionCaseInsensitive</span> <span class="nl">error</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSArray</span><span class="o">*</span> <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">regex</span> <span class="nl">matchesInString</span><span class="p">:</span><span class="n">phoneSentence</span>                                      <span class="nl">options</span><span class="p">:</span><span class="n">NSMatchingWithoutAnchoringBounds</span>
+</span><span class='line'>                                    <span class="nl">range</span><span class="p">:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">phoneSentence</span> <span class="n">length</span><span class="p">])];</span>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;All matches: %@&quot;</span><span class="p">,</span> <span class="n">matches</span><span class="p">);</span>
-</span><span class='line'><span class="n">NSTextCheckingResult</span> <span class="o">*</span><span class="n">match</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSTextCheckingResult</span> <span class="o">*</span><span class="n">match</span> <span class="o">=</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 </span><span class='line'><span class="n">NSRange</span> <span class="n">range</span> <span class="o">=</span> <span class="n">match</span><span class="p">.</span><span class="n">range</span><span class="p">;</span>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">matchString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">phoneSentence</span> <span class="nl">substringFromIndex:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">]</span> <span class="nl">substringToIndex:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span><span class="p">];</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">matchString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">phoneSentence</span> <span class="nl">substringFromIndex</span><span class="p">:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">]</span> <span class="nl">substringToIndex</span><span class="p">:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;First match: %@&quot;</span><span class="p">,</span><span class="n">matchString</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -131,7 +939,7 @@
 
 <p>Our simple regex pattern here is &ldquo;.&rdquo;, which effectively means, find every individual character.</p>
 
-<p>2) &ndash; (NSArray <em>)matchesInString:(NSString </em>)string options:(NSMatchingOptions)options range:(NSRange)range</p>
+<p>2) - (NSArray <em>)matchesInString:(NSString </em>)string options:(NSMatchingOptions)options range:(NSRange)range</p>
 
 <p>This method returns an array of NSTextCheckingResults, or ranges in which matches were found.</p>
 
@@ -141,21 +949,21 @@
 
 <p>So what are some regular expression operators you should know?</p>
 
-<p>{n} &ndash; match something exactly n times
-{n, } &ndash; match at least n times (as many times as possible)
-{n, m} &ndash; match between n and m times, inclusive
-| &ndash; match either before or after the pipe</p>
+<p>{n} - match something exactly n times
+{n, } - match at least n times (as many times as possible)
+{n, m} - match between n and m times, inclusive
+| - match either before or after the pipe</p>
 
 <p>And what are some metacharacters you should know?</p>
 
-<p>\d &ndash; Match any decimal digit in the Unicode set of characters
-\D &ndash; Match any non decimal digit
-\r &ndash; Match a carriage return
-\s &ndash; Match a whitespace character
-.  &ndash; Match any character
-^  &ndash; Match only if at the beginning of the line
-$  &ndash; Match only from the end of the line
-\  &ndash; Character escape for the following characters: * ? + [ { } ( ) ^ $ | \ . /</p>
+<p>\d - Match any decimal digit in the Unicode set of characters
+\D - Match any non decimal digit
+\r - Match a carriage return
+\s - Match a whitespace character
+.  - Match any character
+^  - Match only if at the beginning of the line
+$  - Match only from the end of the line
+\  - Character escape for the following characters: * ? + [ { } ( ) ^ $ | \ . /</p>
 
 <p>So some nice regular expressions to have in your back pocket (please note I have not validated these!):</p>
 
@@ -166,13 +974,13 @@ $  &ndash; Match only from the end of the line
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">ssnRegex</span> <span class="o">=</span> <span class="s">@&quot;[0-9]{3}-[0-9]{3}-[0-9]{4}&quot;</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">ssnRegex</span> <span class="o">=</span> <span class="s">@&quot;[0-9]{3}-[0-9]{3}-[0-9]{4}&quot;</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">emailRegex</span> <span class="o">=</span> <span class="s">@&quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+</span><span class="se">\\</span><span class="s">.[A-Za-z]{2,6}&quot;</span><span class="p">;</span> <span class="c1">//1</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">emailRegex</span> <span class="o">=</span> <span class="s">@&quot;[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+</span><span class="se">\\</span><span class="s">.[A-Za-z]{2,6}&quot;</span><span class="p">;</span> <span class="c1">//1</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">htmltagRegex</span> <span class="o">=</span> <span class="s">@&quot;&lt;([a-z][a-z0-9]*)</span><span class="se">\b</span><span class="s">[^&gt;]*&gt;(.*?)&quot;&quot;; //2</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">htmltagRegex</span> <span class="o">=</span> <span class="s">@&quot;&lt;([a-z][a-z0-9]*)</span><span class="se">\b</span><span class="s">[^&gt;]*&gt;(.*?)&quot;&quot;; //2</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">NSString</span> <span class="o">*</span><span class="n">phoneRegex</span> <span class="o">=</span> <span class="s">@&quot;^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$&quot;</span><span class="p">;</span> <span class="c1">//3</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">phoneRegex</span> <span class="o">=</span> <span class="s">@&quot;^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$&quot;</span><span class="p">;</span> <span class="c1">//3</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -188,9 +996,9 @@ $  &ndash; Match only from the end of the line
   
   <entry>
     <title type="html"><![CDATA[How to Build Your Own Completion Handler Method]]></title>
-    <link href="http://www.zacharydrossman.com/blog/2014/06/24/how-to-build-your-own-completion-handler-method/"/>
+    <link href="http://zacharydrossman.com/blog/2014/06/24/how-to-build-your-own-completion-handler-method/"/>
     <updated>2014-06-24T23:45:58-04:00</updated>
-    <id>http://www.zacharydrossman.com/blog/2014/06/24/how-to-build-your-own-completion-handler-method</id>
+    <id>http://zacharydrossman.com/blog/2014/06/24/how-to-build-your-own-completion-handler-method</id>
     <content type="html"><![CDATA[<p>What is a completion handler method?</p>
 
 <p>So you&rsquo;re finally at the point in your app where you have to make a network call. Let&rsquo;s say your app downloads pictures of cats from the interwebs. A network call is the process of asking the web for something and then waiting for it to come back to you with what you asked for. Or not. What if the internet has no pictures of cats on it anywhere? In that case, your request will come back with nothing at all.</p>
@@ -281,9 +1089,9 @@ $  &ndash; Match only from the end of the line
   
   <entry>
     <title type="html"><![CDATA[How to: Roll Your Own Objective-C Database]]></title>
-    <link href="http://www.zacharydrossman.com/blog/2014/06/16/how-to-roll-your-own-objective-c-database/"/>
+    <link href="http://zacharydrossman.com/blog/2014/06/16/how-to-roll-your-own-objective-c-database/"/>
     <updated>2014-06-16T09:55:34-04:00</updated>
-    <id>http://www.zacharydrossman.com/blog/2014/06/16/how-to-roll-your-own-objective-c-database</id>
+    <id>http://zacharydrossman.com/blog/2014/06/16/how-to-roll-your-own-objective-c-database</id>
     <content type="html"><![CDATA[<p>First, a disclaimer: This is my first attempt at blogging in Octopress. Enough said. Surf my site at your own risk of getting frustrated. This disclaimer may have to appear on every blog post I create for the next few months too, but today&rsquo;s is particularly tenuous.</p>
 
 <p>Second, another disclaimer: You will not see all of the code you would need to write in this post just yet. Though I plan to augment this post with additional code in the future. I have just learned how challenging it can be to write objective-c code without the support of Xcode&rsquo;s autocomplete feature! (It was always there to give me a push when I needed it.)</p>
@@ -304,13 +1112,13 @@ $  &ndash; Match only from the end of the line
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">createArrayOfEnglishWordsFromDictionaryFile</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">createArrayOfEnglishWordsFromDictionaryFile</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">arrayOfAllWordsInTheEnglishLanguage</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'>  <span class="n">NSString</span> <span class="o">*</span><span class="n">allWordsInTheEnglishLanguage</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithContentsOfFile:</span><span class="n">filePath</span> <span class="nl">encoding:</span><span class="n">fileEncoding</span> <span class="nl">error:</span><span class="nb">NULL</span><span class="p">];</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="n">aWord</span> <span class="k">in</span> <span class="p">[</span><span class="n">allWordsInTheEnglishLanguage</span> <span class="nl">componentsSeparatedByString:</span><span class="s">@&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">])</span>
+</span><span class='line'>  <span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">arrayOfAllWordsInTheEnglishLanguage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  <span class="bp">NSString</span> <span class="o">*</span><span class="n">allWordsInTheEnglishLanguage</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithContentsOfFile</span><span class="p">:</span><span class="n">filePath</span> <span class="nl">encoding</span><span class="p">:</span><span class="n">fileEncoding</span> <span class="nl">error</span><span class="p">:</span><span class="nb">NULL</span><span class="p">];</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="n">aWord</span> <span class="k">in</span> <span class="p">[</span><span class="n">allWordsInTheEnglishLanguage</span> <span class="nl">componentsSeparatedByString</span><span class="p">:</span><span class="s">@&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">])</span>
 </span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>      <span class="p">[</span><span class="n">arrayOfAllWordsInTheEnglishLanguage</span> <span class="nl">addObject:</span><span class="n">aWord</span><span class="p">];</span>
+</span><span class='line'>      <span class="p">[</span><span class="n">arrayOfAllWordsInTheEnglishLanguage</span> <span class="nl">addObject</span><span class="p">:</span><span class="n">aWord</span><span class="p">];</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">}</span>
@@ -367,17 +1175,17 @@ $  &ndash; Match only from the end of the line
 <span class='line-number'>32</span>
 <span class='line-number'>33</span>
 <span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">NSInteger</span> <span class="n">numWordsInDictionary</span> <span class="o">=</span> <span class="mi">200000</span> <span class="c1">//assumes you know the number of lines (words) in the file for simplicity of the example</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSInteger</span> <span class="n">numWordsInDictionary</span> <span class="o">=</span> <span class="mi">200000</span> <span class="c1">//assumes you know the number of lines (words) in the file for simplicity of the example</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">findWordInBinaryTreeDictionary:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">aWord</span>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">findWordInBinaryTreeDictionary</span><span class="p">:(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">aWord</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">self</span><span class="p">.</span><span class="n">wordScore</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="nb">self</span><span class="p">.</span><span class="n">wordScore</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">aWord</span> <span class="n">length</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>      <span class="n">self</span><span class="p">.</span><span class="n">wordScore</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wordScore</span> <span class="o">+</span> <span class="p">[</span><span class="n">aWord</span> <span class="nl">characterAtIndex:</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">wordScore</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">wordScore</span> <span class="o">+</span> <span class="p">[</span><span class="n">aWord</span> <span class="nl">characterAtIndex</span><span class="p">:</span><span class="n">i</span><span class="p">];</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">NSInteger</span> <span class="o">*</span><span class="n">foundSameIndexAsWordBeingSearched</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nl">recursiveBinarySearchOnDictionary:</span><span class="n">numWordsInDictionary</span><span class="o">/</span><span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>  <span class="bp">NSInteger</span> <span class="o">*</span><span class="n">foundSameIndexAsWordBeingSearched</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">recursiveBinarySearchOnDictionary</span><span class="p">:</span><span class="n">numWordsInDictionary</span><span class="o">/</span><span class="mi">2</span><span class="p">];</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="c1">//finish this by adding code to check predecessors and successors for the same score. create an array of these and linearly (or with Cocoa API at faster speeds) search this subset only.</span>
 </span><span class='line'>
@@ -385,20 +1193,20 @@ $  &ndash; Match only from the end of the line
 </span><span class='line'>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nl">recursiveBinarySearchOnDictionary:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="n">lineNumberToBeChecked</span>
+</span><span class='line'><span class="o">-</span> <span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nl">recursiveBinarySearchOnDictionary</span><span class="p">:(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="n">lineNumberToBeChecked</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">NSInteger</span> <span class="n">wordScoreOnLineNumber</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="nl">substringToIndex:</span><span class="p">[</span><span class="n">lineNumberToBeChecked</span> <span class="nl">rangeOfString:</span><span class="s">@&quot; &quot;</span><span class="p">]]</span> <span class="n">integerValue</span><span class="p">];</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">wordScoreOnLineNumber</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">wordScore</span>
+</span><span class='line'>  <span class="bp">NSInteger</span> <span class="n">wordScoreOnLineNumber</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSString</span> <span class="nl">substringToIndex</span><span class="p">:[</span><span class="n">lineNumberToBeChecked</span> <span class="nl">rangeOfString</span><span class="p">:</span><span class="s">@&quot; &quot;</span><span class="p">]]</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">wordScoreOnLineNumber</span> <span class="o">==</span> <span class="nb">self</span><span class="p">.</span><span class="n">wordScore</span>
 </span><span class='line'>  <span class="p">{</span>
 </span><span class='line'>      <span class="k">return</span> <span class="n">lineNumberToBeChecked</span><span class="p">;</span>
 </span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">wordScoreOnLineNumber</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">wordScore</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">wordScoreOnLineNumber</span> <span class="o">&lt;</span> <span class="nb">self</span><span class="p">.</span><span class="n">wordScore</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>      <span class="p">[</span><span class="n">self</span> <span class="nl">recursiveBinarySearchOnDictionary:</span><span class="n">lineNumberToBeChecked</span><span class="o">*</span><span class="mf">1.5</span><span class="p">];</span>
+</span><span class='line'>      <span class="p">[</span><span class="nb">self</span> <span class="nl">recursiveBinarySearchOnDictionary</span><span class="p">:</span><span class="n">lineNumberToBeChecked</span><span class="o">*</span><span class="mf">1.5</span><span class="p">];</span>
 </span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">wordScoreOnLineNumber</span> <span class="o">&gt;</span> <span class="n">self</span><span class="p">.</span><span class="n">wordScore</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">wordScoreOnLineNumber</span> <span class="o">&gt;</span> <span class="nb">self</span><span class="p">.</span><span class="n">wordScore</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>      <span class="p">[</span><span class="n">self</span> <span class="nl">recursiveBinarySearchOnDictionary:</span><span class="n">lineNumberToBeChecked</span><span class="o">/</span><span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="p">[</span><span class="nb">self</span> <span class="nl">recursiveBinarySearchOnDictionary</span><span class="p">:</span><span class="n">lineNumberToBeChecked</span><span class="o">/</span><span class="mi">2</span><span class="p">];</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>

@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Working With the Contact List - Runtime Will Tell</title>
+  <meta name="author" content="Zachary Drossman">
+
+  
+  <meta name="description" content="I&rsquo;ve been in dire need of a refresher on how to work with the contact list, and so, I am creating a reference! Step 1: Make sure you have &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://zacharydrossman.com/blog/2014/07/29/working-with-the-contact-list">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Runtime Will Tell" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Runtime Will Tell</a></h1>
+  
+    <h2>Technically speaking&#8230;</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:zacharydrossman.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Working With the Contact List</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-29T14:06:33-04:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:06 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&rsquo;ve been in dire need of a refresher on how to work with the contact list, and so, I am creating a reference!</p>
+
+<p>Step 1: Make sure you have authorization to use the contact data:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">isAuthorized</span><span class="p">;</span>
+</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">strong</span><span class="p">,</span> <span class="k">nonatomic</span><span class="p">)</span> <span class="bp">NSArray</span> <span class="o">*</span><span class="n">contactsArray</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="n">ABAuthorizationStatus</span><span class="p">)</span><span class="nf">isAuthorized</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">_isAuthorized</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">ABAddressBookGetAuthorizationStatus</span><span class="p">()</span> <span class="o">==</span> <span class="n">kABAuthorizationStatusAuthorized</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">_isAuthorized</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">_isAuthorized</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 2: If not authorized, get authorized or don&rsquo;t do anything!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeAppToUseAddressBookWithCompletion:</span><span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">ABAddressBookRef</span> <span class="n">addressBook</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">))</span><span class="nv">completionBlock</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">CFErrorRef</span> <span class="n">error</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">ABAddressBookRef</span> <span class="n">addressBook</span> <span class="o">=</span> <span class="n">ABAddressBookCreateWithOptions</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isAuthorized</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">ABAddressBookRequestAccessWithCompletion</span><span class="p">(</span><span class="n">addressBook</span><span class="p">,</span> <span class="o">^</span><span class="p">(</span><span class="kt">bool</span> <span class="n">granted</span><span class="p">,</span> <span class="n">CFErrorRef</span> <span class="n">error</span><span class="p">){</span>
+</span><span class='line'>            <span class="n">completionBlock</span><span class="p">(</span><span class="n">addressBook</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">CFRelease</span><span class="p">(</span><span class="n">addressBook</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 3: Collect data from the addressbook; you will need to bridge_transfer the ArrayOfAllPeople since it is written in C and not objective-C!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">collectContactsFromAddressBook</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">[</span><span class="nb">self</span> <span class="nl">authorizeAppToUseAddressBookWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">ABAddressBookRef</span> <span class="n">addressBook</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="bp">NSMutableArray</span> <span class="o">*</span><span class="n">contactsFromAddressBook</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">addressBook</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="bp">NSArray</span> <span class="o">*</span><span class="n">allContacts</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="n">ABAddressBookCopyArrayOfAllPeople</span><span class="p">(</span><span class="n">addressBook</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>          <span class="bp">NSUInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>          <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">[</span><span class="n">allContacts</span> <span class="n">count</span><span class="p">];</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="n">Contact</span> <span class="o">*</span><span class="n">contact</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Contact</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="n">ABRecordRef</span> <span class="n">contactPerson</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge</span> <span class="n">ABRecordRef</span><span class="p">)</span><span class="n">allContacts</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="bp">NSDate</span> <span class="o">*</span><span class="n">lastModiDate</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSDate</span><span class="o">*</span><span class="p">)</span><span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonModificationDateProperty</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="c1">//names</span>
+</span><span class='line'>              <span class="bp">NSString</span> <span class="o">*</span><span class="n">firstName</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonFirstNameProperty</span><span class="p">);</span>
+</span><span class='line'>              <span class="bp">NSString</span> <span class="o">*</span><span class="n">lastName</span> <span class="o">=</span>  <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonLastNameProperty</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="bp">NSString</span> <span class="o">*</span><span class="n">fullName</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">(</span><span class="n">lastName</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="n">fullName</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">firstName</span><span class="p">];</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>              <span class="k">else</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="n">fullName</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%@ %@&quot;</span><span class="p">,</span> <span class="n">firstName</span><span class="p">,</span> <span class="n">lastName</span><span class="p">];</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">contactFirstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">contactLastName</span> <span class="o">=</span> <span class="n">lastName</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">contactFullName</span> <span class="o">=</span> <span class="n">fullName</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">contact</span><span class="p">.</span><span class="n">modiDate</span> <span class="o">=</span> <span class="n">lastModiDate</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="c1">//email</span>
+</span><span class='line'>              <span class="n">ABMultiValueRef</span> <span class="n">emails</span> <span class="o">=</span> <span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonEmailProperty</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="bp">NSUInteger</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">ABMultiValueGetCount</span><span class="p">(</span><span class="n">emails</span><span class="p">);</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="bp">NSString</span> <span class="o">*</span><span class="n">email</span> <span class="o">=</span> <span class="p">(</span><span class="k">__bridge_transfer</span> <span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">ABMultiValueCopyValueAtIndex</span><span class="p">(</span><span class="n">emails</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+</span><span class='line'>                  <span class="p">[</span><span class="n">contact</span><span class="p">.</span><span class="n">contactEmailArray</span> <span class="nl">addObject</span><span class="p">:</span><span class="n">email</span><span class="p">];</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>              <span class="c1">//phone number</span>
+</span><span class='line'>              <span class="n">ABMultiValueRef</span> <span class="n">phonenums</span> <span class="o">=</span> <span class="n">ABRecordCopyValue</span><span class="p">(</span><span class="n">contactPerson</span><span class="p">,</span> <span class="n">kABPersonPhoneProperty</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="c1">//Add to mutable contact array</span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">([</span><span class="n">contact</span><span class="p">.</span><span class="n">contactPhoneNumberArray</span> <span class="n">firstObject</span><span class="p">])</span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>              <span class="p">[</span><span class="n">contactsFromAddressBook</span> <span class="nl">addObject</span><span class="p">:</span><span class="n">contact</span><span class="p">];</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>      <span class="nb">self</span><span class="p">.</span><span class="n">contactsArray</span> <span class="o">=</span> <span class="n">contactsFromAddressBook</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">}];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Zachary Drossman</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-07-29T14:06:33-04:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:06 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zacharydrossman.com/blog/2014/07/29/working-with-the-contact-list/" data-via="zdrossman" data-counturl="http://zacharydrossman.com/blog/2014/07/29/working-with-the-contact-list/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/" title="Previous Post: What I write about when I have nothing to write about">&laquo; What I write about when I have nothing to write about</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/10/20/unit-testing-basics/" title="Next Post: Unit Testing Basics">Unit Testing Basics &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/20/unit-testing-basics/">Unit Testing Basics</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/29/working-with-the-contact-list/">Working With the Contact List</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/17/what-i-write-about-when-i-have-nothing-to-write-about/">What I Write About When I Have Nothing to Write About</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/10/integrating-parse-and-core-data/">Integrating Parse and Core Data</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/regular-expressions-my-ass/">Regular Expressions My Ass.</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/zdrossman">@zdrossman</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'zdrossman',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Zachary Drossman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
