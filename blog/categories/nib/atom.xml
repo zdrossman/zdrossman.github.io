@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Nib, | Runtime Will Tell]]></title>
   <link href="http://zacharydrossman.com/blog/categories/nib/atom.xml" rel="self"/>
   <link href="http://zacharydrossman.com/"/>
-  <updated>2014-11-14T14:34:42-05:00</updated>
+  <updated>2014-11-14T14:35:34-05:00</updated>
   <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -56,7 +56,7 @@
 
 <p>Click next.</p>
 
-<p><img src="" alt="" /></p>
+<p><img src="/images/xibsWithStoryboards/fileSave.png" alt="" /></p>
 
 <p>You will be prompted to save the file with a name. It is customary to save it with the name of the UIView class to which you will be associating this IB file.</p>
 
