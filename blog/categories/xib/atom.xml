@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Xib, | Runtime Will Tell]]></title>
   <link href="http://zacharydrossman.com/blog/categories/xib/atom.xml" rel="self"/>
   <link href="http://zacharydrossman.com/"/>
-  <updated>2014-11-14T14:33:47-05:00</updated>
+  <updated>2014-11-14T14:34:42-05:00</updated>
   <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -50,7 +50,7 @@
 
 <p>To add a xib file to your project in Xcode 6, go to <code>File</code> &ndash;> <code>New</code> &ndash;> <code>File</code>.</p>
 
-<p><img src="/images/xibsWithStoryboards/menu_userInterface.png" alt="" /></p>
+<p><img src="/images/xibsWithStoryboards/menu_UserInterface.png" alt="" /></p>
 
 <p>Click on <code>User Interface</code> from the choices on the left, and then choose <code>View</code> (or <code>Empty</code>) on the right.</p>
 
