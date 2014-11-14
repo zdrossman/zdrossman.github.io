@@ -9,7 +9,7 @@
   <meta name="author" content="Zachary Drossman">
 
   
-  <meta name="description" content="What Problem Are We Solving? Ahh testing. Here&rsquo;s a topic that warrants an entire book. Or bookshelf. As a programmer, we are often in the weeds &hellip;">
+  <meta name="description" content="An achilles heel (or two) for the great and powerful Storyboard Since Xcode 4.2, we have had storyboards. And while many developers saw them as a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,145 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/11/xibs/">Xibs, Nibs, Let&#8217;s Call the Whole Thing Off. Part I</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-11T09:37:26-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:37 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>An achilles heel (or two) for the great and powerful Storyboard</h2>
+
+<p>Since Xcode 4.2, we have had storyboards. And while many developers saw them as a nuisance at first, storyboards have become more and more important with the advent of new phone sizes. And they are pretty great. We can get a view into our entire app and how its various views connect up with one another, a sense of the &ldquo;flow&rdquo; our users will experience. We can build a rough estimate of how each view will look, and share that with designers. In more recent versions of xcode, we can even review our UI on the different size screens.</p>
+
+<p>However, even with all of this functionality, there are two major drawbacks to using storyboards:</p>
+
+<p>1) Version control conflicts</p>
+
+<p>Xibs are effectively stored as xml. And when two programmers are working on parts of a storyboard at the same time on their own systems and then want commit their code up to a central repository, one of them is going to have to integrate the other&rsquo;s work into their version first. And storyboards do not make that easy.</p>
+
+<p>It becomes a rather involved exercise of examinining the xml for the conflicts and then knowing which are the moving parts you wish to keep / discard (without being able to see the storyboard until you have made ALL changes.) This is pretty much unacceptable. While a programmer who has a very strong eye for XML may be able to do this, for most of us it will eat away at the cost / benefit of using storyboards to begin with.</p>
+
+<p>2) Machine performance for large models</p>
+
+<p>To a lesser extent, as Storyboards become large, they tend to act a bit funky / freeze up. Ask many developers who have 16GB RAM in their machine, and a new MacBook Pro laptop with strong CPU and they still may run into issues. (Take this as anecdotal and not necessarily what you will experience, but may still be good to pre-empt a potentially knotty situation!)</p>
+
+<h2>To the rescue: Xibs</h2>
+
+<p>The xib was a popular GUI element prior to the advent of storyboards and continues to have strong support, namely because it supports much of the upside of Storyboards without the level of version control conflicts and processor issues you may encounter on some machines. To be clear, you wouldn&rsquo;t see the same level of version control conflicts because generally speaking, developers do not work on the same view at the same time (and xibs, as you will soon see, usually represent just a single view.)</p>
+
+<h5>So what is a xib?</h5>
+
+<p>A xib is a drag-and-drop GUI for a <code>UIView</code>. It is one type of &ldquo;Interface Builder&rdquo; or &ldquo;IB&rdquo; file you can build in Xcode. You can add <code>UILabel</code>s, <code>UITextView</code>s, <code>UIButton</code>s, subviews, custom views, and pretty much any object that inherits from <code>UIView</code>, to it.</p>
+
+<h2>Part I</h2>
+
+<p>This tutorial will describe how to setup a xib with an existing storyboard. In a future tutorial, we will demonstrate how to setup a xib without a storyboard. And in another post we will go over how to segue from one view to another in code, to ensure you are completely setup with the tools necessary to use xibs.</p>
+
+<h3>Getting setup</h3>
+
+<p>To add a xib file to your project in Xcode 6, go to <code>File</code> &ndash;> <code>New</code> &ndash;> <code>File</code>.</p>
+
+<p><img src="" alt="" /></p>
+
+<p>Click on <code>User Interface</code> from the choices on the left, and then choose <code>View</code> (or <code>Empty</code>) on the right.</p>
+
+<p>Click next.</p>
+
+<p><img src="" alt="" /></p>
+
+<p>You will be prompted to save the file with a name. It is customary to save it with the name of the UIView class to which you will be associating this IB file.</p>
+
+<p>Just as you would with a storyboard, you can drag objects from the Object Library onto the canvas. I suggest beginning with a <code>View</code> because most xibs you build do need</p>
+
+<h2>How to use them with storyboards</h2>
+
+<p>Now here is the meat of it. Most folks (and blog posts) seem to either miss this part, or just not get it quite right. This is what you need to do:</p>
+
+<h5>Build out the xib</h5>
+
+<p>Add a single view at a custom size of 160 points by 80 points (or resize your view if you already have it on screen.) You could have a view that is full size, but then it will be tougher to see how these can be reused on a storyboard as we will demonstrate. Then dragged a <code>UILabel</code> onto the <code>UIView</code> and center it. Add some text to it like we have done here.</p>
+
+<p><img src="" alt="" /></p>
+
+<h5>Setup outlets from the xib to the class associated with the xib</h5>
+
+<p>Next, drag both the <code>UIView</code> and the <code>UILabel</code> objects from the xib canvas to the associated <code>.h</code> file of the class. You will need to be in &ldquo;Assistant Editor&rdquo; mode to do this (to see both on screen at the same time.) In case you have not previously done this with a Storyboard, or as a refresher, you will need to hold down the CTRL key when you drag. You will see the line from the object to the class. Let go when you your cursor is between the <code>@interface</code> and <code>@end</code> section of the file.</p>
+
+<p>You will be adding outlets which is the default. Your <code>UIView</code> may be called <code>view</code> and your <code>UILabel</code> may be called <code>label</code> as we have shown here.</p>
+
+<p><img src="" alt="" /></p>
+
+<h5>Setup initWithCoder in the class associated with your xib</h5>
+
+<p>In most of our code, when we initialize a view, we use the <code>initWithFrame</code> (or plain init) method as a default or designated initializer. However, when initializing a <code>UIView</code> from a storyboard, we use <code>initWithCoder:</code>. It is this method that will be called when the Storyboard goes to load the <code>UIView</code>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(id)initWithCoder:(NSCoder *)aDecoder
+</span><span class='line'>{
+</span><span class='line'>    self = [super initWithCoder:aDecoder];
+</span><span class='line'>    if(!self){
+</span><span class='line'>        return nil;
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class])
+</span><span class='line'>                                        owner:self
+</span><span class='line'>                                      options:nil];
+</span><span class='line'>    
+</span><span class='line'>    [self addSubview:self.view];
+</span><span class='line'>    
+</span><span class='line'>    return self;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have added some code to this method as well. THe <code>loadNibNamed:</code> method call is where the magic happens that loads the xib, instead of seeking out the interface in code alone.</p>
+
+<p>Note: The class associated with the xib file should be a subclass of <code>UIView</code>, and generally not <code>UIViewController</code>. Note the line of code that adds our <code>view</code> object to the xib. This may not seem entirely intuitive at first, but make sure you do add the view object as a subview of the view class.</p>
+
+<h5>Add your custom view to a storyboard view</h5>
+
+<p>Head over to the storyboard and add a <code>UIView</code> object. Resize the object to be the same size as the xib frame. (At least for sanity&rsquo;s sake. Keep in mind that if you are actually using xibs to skin entire view controllers, the size will be determined by the view controller&rsquo;s size when you are using autolayout.)</p>
+
+<p>I&rsquo;ve added my subview a couple of times to a <code>UITableViewCell</code> in a <code>UITableViewController</code>.</p>
+
+<p>Now subclass your UIView to be the same as the class you want to show up.</p>
+
+<p><img src="" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1426,6 +1565,10 @@ $  - Match only from the end of the line
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/11/11/xibs/">Xibs, Nibs, Let&#8217;s Call the Whole Thing Off. Part I</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/20/unit-testing-basics/">Unit Testing Basics</a>
       </li>
     
@@ -1439,10 +1582,6 @@ $  - Match only from the end of the line
     
       <li class="post">
         <a href="/blog/2014/07/10/integrating-parse-and-core-data/">Integrating Parse and Core Data</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/02/regular-expressions-my-ass/">Regular Expressions My Ass.</a>
       </li>
     
   </ul>
