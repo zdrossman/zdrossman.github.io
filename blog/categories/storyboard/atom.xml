@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Storyboard | Runtime Will Tell]]></title>
   <link href="http://zacharydrossman.com/blog/categories/storyboard/atom.xml" rel="self"/>
   <link href="http://zacharydrossman.com/"/>
-  <updated>2014-11-14T14:35:34-05:00</updated>
+  <updated>2014-11-14T14:36:27-05:00</updated>
   <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -99,7 +99,7 @@
 }
 </code></pre>
 
-<p>We have added some code to this method as well. THe <code>loadNibNamed:</code> method call is where the magic happens that loads the xib, instead of seeking out the interface in code alone.</p>
+<p>We have added some code to this method as well. The <code>loadNibNamed:</code> method call is where the magic happens that loads the xib, instead of seeking out the interface in code alone.</p>
 
 <p>Note: The class associated with the xib file should be a subclass of <code>UIView</code>, and generally not <code>UIViewController</code>. Note the line of code that adds our <code>view</code> object to the xib. This may not seem entirely intuitive at first, but make sure you do add the view object as a subview of the view class.</p>
 
