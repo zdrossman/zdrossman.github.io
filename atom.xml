@@ -4,7 +4,7 @@
   <title><![CDATA[Runtime Will Tell]]></title>
   <link href="http://zacharydrossman.com/atom.xml" rel="self"/>
   <link href="http://zacharydrossman.com/"/>
-  <updated>2014-11-14T14:31:32-05:00</updated>
+  <updated>2014-11-14T14:33:47-05:00</updated>
   <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -28,7 +28,7 @@
 
 <p>Xibs are effectively stored as xml. And when two programmers are working on parts of a storyboard at the same time on their own systems and then want commit their code up to a central repository, one of them is going to have to integrate the other&rsquo;s work into their version first. And storyboards do not make that easy.</p>
 
-<p>It becomes a rather involved exercise of examinining the xml for the conflicts and then knowing which are the moving parts you wish to keep / discard (without being able to see the storyboard until you have made ALL changes.) This is pretty much unacceptable. While a programmer who has a very strong eye for XML may be able to do this, for most of us it will eat away at the cost / benefit of using storyboards to begin with.</p>
+<p>It becomes a rather involved exercise of examinining the xml for the conflicts and then knowing which are the moving parts you wish to keep / discard (without being able to see the storyboard until you have made ALL changes.) This is pretty much unacceptable. While a programmer who has a strong eye for XML may be able to piece it all together with some efficiency, for most of us it will eat away at the cost / benefit of using storyboards to begin with.</p>
 
 <p>2) Machine performance for large models</p>
 
@@ -42,15 +42,15 @@
 
 <p>A xib is a drag-and-drop GUI for a <code>UIView</code>. It is one type of &ldquo;Interface Builder&rdquo; or &ldquo;IB&rdquo; file you can build in Xcode. You can add <code>UILabel</code>s, <code>UITextView</code>s, <code>UIButton</code>s, subviews, custom views, and pretty much any object that inherits from <code>UIView</code>, to it.</p>
 
-<h2>Part I</h2>
+<h2>Part I: Xibs with storyboards</h2>
 
-<p>This tutorial will describe how to setup a xib with an existing storyboard. In a future tutorial, we will demonstrate how to setup a xib without a storyboard. And in another post we will go over how to segue from one view to another in code, to ensure you are completely setup with the tools necessary to use xibs.</p>
+<p>This tutorial will describe how to setup a xib with an existing storyboard. In a future tutorial, we will demonstrate how to setup a xib without a storyboard. And in a later post we will go over how to segue from one view to another in code, to ensure you are completely setup with the tools necessary to use xibs.</p>
 
 <h3>Getting setup</h3>
 
 <p>To add a xib file to your project in Xcode 6, go to <code>File</code> &ndash;> <code>New</code> &ndash;> <code>File</code>.</p>
 
-<p><img src="" alt="" /></p>
+<p><img src="http://zacharydrossman.com/images/xibsWithStoryboards/menu_userInterface.png" alt="" /></p>
 
 <p>Click on <code>User Interface</code> from the choices on the left, and then choose <code>View</code> (or <code>Empty</code>) on the right.</p>
 
@@ -62,15 +62,13 @@
 
 <p>Just as you would with a storyboard, you can drag objects from the Object Library onto the canvas. I suggest beginning with a <code>View</code> because most xibs you build do need</p>
 
-<h2>How to use them with storyboards</h2>
-
 <p>Now here is the meat of it. Most folks (and blog posts) seem to either miss this part, or just not get it quite right. This is what you need to do:</p>
 
 <h5>Build out the xib</h5>
 
 <p>Add a single view at a custom size of 160 points by 80 points (or resize your view if you already have it on screen.) You could have a view that is full size, but then it will be tougher to see how these can be reused on a storyboard as we will demonstrate. Then dragged a <code>UILabel</code> onto the <code>UIView</code> and center it. Add some text to it like we have done here.</p>
 
-<p><img src="" alt="" /></p>
+<p><img src="http://zacharydrossman.com/images/xibsWithStoryboards/xib_with_label.png" alt="" /></p>
 
 <h5>Setup outlets from the xib to the class associated with the xib</h5>
 
@@ -78,7 +76,7 @@
 
 <p>You will be adding outlets which is the default. Your <code>UIView</code> may be called <code>view</code> and your <code>UILabel</code> may be called <code>label</code> as we have shown here.</p>
 
-<p><img src="" alt="" /></p>
+<p><img src="http://zacharydrossman.com/images/xibsWithStoryboards/outlet_setup.png" alt="" /></p>
 
 <h5>Setup initWithCoder in the class associated with your xib</h5>
 
@@ -128,7 +126,11 @@
 
 <p>Now subclass your UIView to be the same as the class you want to show up.</p>
 
-<p><img src="" alt="" /></p>
+<p><img src="http://zacharydrossman.com/images/xibsWithStoryboards/subclassing_views.png" alt="" /></p>
+
+<h5>And voila!</h5>
+
+<p>You should now be able to run your program and see your beautiful xibs pop up on screen as expected!</p>
 ]]></content>
   </entry>
   
