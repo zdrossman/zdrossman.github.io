@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Nib, | Runtime Will Tell]]></title>
   <link href="http://zacharydrossman.com/blog/categories/nib/atom.xml" rel="self"/>
   <link href="http://zacharydrossman.com/"/>
-  <updated>2014-11-14T14:36:27-05:00</updated>
+  <updated>2015-02-23T10:33:24-05:00</updated>
   <id>http://zacharydrossman.com/</id>
   <author>
     <name><![CDATA[Zachary Drossman]]></name>
@@ -102,6 +102,12 @@
 <p>We have added some code to this method as well. The <code>loadNibNamed:</code> method call is where the magic happens that loads the xib, instead of seeking out the interface in code alone.</p>
 
 <p>Note: The class associated with the xib file should be a subclass of <code>UIView</code>, and generally not <code>UIViewController</code>. Note the line of code that adds our <code>view</code> object to the xib. This may not seem entirely intuitive at first, but make sure you do add the view object as a subview of the view class.</p>
+
+<h5>Subclass the File&rsquo;s Owner</h5>
+
+<p>Now this is an important step and one that I&rsquo;ve seen many folks forget (me, for one, to include in this post originally!) or do incorrectly. We need to tell Xcode the appropriate class for the File&rsquo;s Owner. So in your right hand pane, make sure you add your custom class name to the Custom Class field in the Identity Inspector. Make sure the File&rsquo;s Owner is selected when you do this. You&rsquo;ll see the File&rsquo;s Owner represented by a transparent yellow box at the top of the Document Outline.</p>
+
+<p>Often, I&rsquo;ve seen folks attempt to set the View as a subclass of it&rsquo;s associated class using the same method I describe above. Do not make this mistake. You&rsquo;ll end up in an infinite loop.</p>
 
 <h5>Add your custom view to a storyboard view</h5>
 

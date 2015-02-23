@@ -187,6 +187,12 @@
 
 <p>Note: The class associated with the xib file should be a subclass of <code>UIView</code>, and generally not <code>UIViewController</code>. Note the line of code that adds our <code>view</code> object to the xib. This may not seem entirely intuitive at first, but make sure you do add the view object as a subview of the view class.</p>
 
+<h5>Subclass the File&rsquo;s Owner</h5>
+
+<p>Now this is an important step and one that I&rsquo;ve seen many folks forget (me, for one, to include in this post originally!) or do incorrectly. We need to tell Xcode the appropriate class for the File&rsquo;s Owner. So in your right hand pane, make sure you add your custom class name to the Custom Class field in the Identity Inspector. Make sure the File&rsquo;s Owner is selected when you do this. You&rsquo;ll see the File&rsquo;s Owner represented by a transparent yellow box at the top of the Document Outline.</p>
+
+<p>Often, I&rsquo;ve seen folks attempt to set the View as a subclass of it&rsquo;s associated class using the same method I describe above. Do not make this mistake. You&rsquo;ll end up in an infinite loop.</p>
+
 <h5>Add your custom view to a storyboard view</h5>
 
 <p>Head over to the storyboard and add a <code>UIView</code> object. Resize the object to be the same size as the xib frame. (At least for sanity&rsquo;s sake. Keep in mind that if you are actually using xibs to skin entire view controllers, the size will be determined by the view controller&rsquo;s size when you are using autolayout.)</p>
@@ -1628,7 +1634,7 @@ $  - Match only from the end of the line
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Zachary Drossman -
+  Copyright &copy; 2015 - Zachary Drossman -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
